@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import CopyButton from './CopyButton';
 
 interface TerminalLine {
     type: 'command' | 'output' | 'loading';
@@ -20,6 +21,23 @@ const LoadingDots = () => {
     }, []);
 
     return <span className="text-gray-400">{dots}</span>;
+};
+
+const TypewriterText = ({ text }: { text: string }) => {
+    const [displayText, setDisplayText] = useState('');
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        if (currentIndex < text.length) {
+            const timeout = setTimeout(() => {
+                setDisplayText(prev => prev + text[currentIndex]);
+                setCurrentIndex(prev => prev + 1);
+            }, 20); // Ajuste este valor para controlar a velocidade da digitação
+            return () => clearTimeout(timeout);
+        }
+    }, [currentIndex, text]);
+
+    return <span>{displayText}</span>;
 };
 
 const DockerTerminal: React.FC<DockerTerminalProps> = ({ onCommandSubmit }) => {
@@ -88,9 +106,9 @@ const DockerTerminal: React.FC<DockerTerminalProps> = ({ onCommandSubmit }) => {
             {/* Terminal Header */}
             <div className="flex items-center px-4 py-2 bg-[#2D2D2D] border-b border-gray-800">
                 <div className="flex space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
-                    <div className="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
-                    <div className="w-3 h-3 rounded-full bg-[#27C93F]"></div>
+                    <div className="w-3 h-3 rounded-full bg-[#FF5F56] animate-pulse"></div>
+                    <div className="w-3 h-3 rounded-full bg-[#FFBD2E] animate-pulse delay-75"></div>
+                    <div className="w-3 h-3 rounded-full bg-[#27C93F] animate-pulse delay-150"></div>
                 </div>
                 <div className="ml-4 flex items-center space-x-2">
                     <svg className="w-5 h-5 text-[#0DB7ED]" viewBox="0 0 640 512" fill="currentColor">
@@ -104,7 +122,7 @@ const DockerTerminal: React.FC<DockerTerminalProps> = ({ onCommandSubmit }) => {
             <div className="p-4 bg-[#0D1117] h-[400px] overflow-y-auto text-sm leading-6 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent hover:scrollbar-thumb-gray-600">
                 <div className="space-y-1">
                     {history.map((line, index) => (
-                        <div key={index} className="text-white">
+                        <div key={index} className="text-white group">
                             {line.type === 'command' ? (
                                 <div className="flex">
                                     <span className="text-[#0DB7ED] mr-2">{getCurrentPath()}</span>
@@ -117,7 +135,12 @@ const DockerTerminal: React.FC<DockerTerminalProps> = ({ onCommandSubmit }) => {
                                     <LoadingDots />
                                 </div>
                             ) : (
-                                <div className="text-gray-300 whitespace-pre-wrap pl-0">{line.content}</div>
+                                <div className="flex justify-between items-start text-gray-300 whitespace-pre-wrap pl-0 group">
+                                    <TypewriterText text={line.content} />
+                                    {line.content && !line.content.includes('Welcome') && !line.content.includes('Type your Docker') && line.type === 'output' && (
+                                        <CopyButton text={line.content.replace(/^`|`$/g, '').trim()} />
+                                    )}
+                                </div>
                             )}
                         </div>
                     ))}
