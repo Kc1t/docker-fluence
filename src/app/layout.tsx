@@ -11,7 +11,15 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "DockerFluence",
-  description: "Gerador de comandos Docker usando Gemini API",
+  description: "Fast & Easy Docker Command Generator",
+  icons: {
+    icon: [
+      {
+        url: '/docker-icon.png',
+        href: '/docker-icon.png',
+      }
+    ]
+  }
 };
 
 export default function RootLayout({

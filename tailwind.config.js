@@ -71,7 +71,9 @@ module.exports = {
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("tailwindcss-animate"),
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require('tailwind-scrollbar'),
   ],
 } 
