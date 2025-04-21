@@ -1,25 +1,13 @@
 'use client';
 
 import DockerTerminal from '../components/DockerTerminal';
+import LanguageSelector from '../components/LanguageSelector';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations';
 
 export default function Home() {
-  const handleCommandSubmit = async (command: string): Promise<string> => {
-    try {
-      const response = await fetch('/api/gemini', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: command }),
-      });
-
-      const data = await response.json();
-      return data.result.replace(/^`|`$/g, '').trim();
-    } catch (error) {
-      console.error('Error:', error);
-      return 'Error: Failed to execute command';
-    }
-  };
+  const { language } = useLanguage();
+  const t = translations[language];
 
   return (
     <div className="min-h-screen bg-[#0D1117] bg-grid-white/[0.02]">
@@ -45,26 +33,28 @@ export default function Home() {
         </div>
       </header>
 
+      {/* Language Selector */}
+      <LanguageSelector />
+
       {/* Main Content */}
       <main className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center mb-16">
           <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-gray-800/50 text-sm text-gray-400">
-            Fast & Easy Docker Command Generator
+            {t.badge}
           </div>
-          <h2 className="text-6xl font-bold mb-6 bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent leading-tight">
-            Find the Docker Command<br />You Need Now!
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent leading-tight">
+            {t.title}<br />{t.subtitle}
           </h2>
-          <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-            The AI-driven solution that helps you quickly find the right command.
-            Get started with Docker Command Generator today and save time.
+          <p className="text-gray-400 text-base md:text-lg mb-8 max-w-2xl mx-auto">
+            {t.description}
           </p>
         </div>
 
         <div className="relative max-w-3xl mx-auto">
           {/* Glow Effect */}
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#0DB7ED] to-[#0077b6] opacity-15 blur"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#fff] to-[#fff] opacity-5 blur"></div>
           <div className="relative">
-            <DockerTerminal onCommandSubmit={handleCommandSubmit} />
+            <DockerTerminal />
           </div>
         </div>
       </main>
