@@ -42,7 +42,7 @@ export default function Home() {
           <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-gray-800/50 text-sm text-gray-400">
             {t.badge}
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3 py-2 bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent leading-tight">
             {t.title}<br />{t.subtitle}
           </h2>
           <p className="text-gray-400 text-base md:text-lg mb-8 max-w-2xl mx-auto">
