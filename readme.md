@@ -2,7 +2,8 @@
 
 
 <div align="center">
-  <img src="public/docker-icon.png" alt="DockerFluence Logo" width="120" />
+  <img src="https://static-00.iconduck.com/assets.00/whale-emoji-484x512-0wxmc5rn.png" alt="DockerFluence Logo" width="120" />
+  
   <p><strong>Fast & Easy Docker Command Generator</strong></p>
 </div>
 
